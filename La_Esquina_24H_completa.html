@@ -1,0 +1,512 @@
+<html lang="es"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>La Esquina 24H — Versión Completa</title>
+  <meta name="description" content="La Esquina 24H — tienda 24 horas en Ciudad Real. Productos, servicios y zona de descanso.">
+  <style>
+    :root{
+      --bg: #f6f7f9;
+      --card: #ffffff;
+      --text: #222;
+      --accent: #e63946;
+      --accent-2: #1d3557;
+      --muted: #667085;
+      --glass: rgba(255,255,255,0.6);
+    }
+    [data-theme="dark"]{
+      --bg: #0f1724;
+      --card: #0b1220;
+      --text: #e6eef8;
+      --accent: #ff6b6b;
+      --accent-2: #89b4d8;
+      --muted: #98a8bd;
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing: border-box}
+    body{margin:0;font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial; background:var(--bg); color:var(--text); -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
+    header{background:linear-gradient(90deg,var(--accent-2),var(--accent)); color:white;padding:48px 20px;text-align:center;}
+    header h1{margin:0;font-size:44px;letter-spacing:1px;}
+    header p{margin:8px 0 0;font-size:18px;opacity:0.95}
+    nav{display:flex;gap:8px;justify-content:center;padding:12px;background:var(--card);box-shadow:0 6px 18px rgba(2,6,23,0.08);position:sticky;top:0;z-index:60;}
+    .nav-link{padding:8px 14px;border-radius:10px;text-decoration:none;color:var(--accent-2);font-weight:600;}
+    .nav-link:hover{background:linear-gradient(90deg, rgba(230,57,70,0.08), rgba(29,53,87,0.06));backdrop-filter: blur(4px);}
+    .container{max-width:1100px;margin:30px auto;padding:0 18px;}
+    .grid{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:start;}
+    /* cards */
+    .card{background:var(--card);border-radius:14px;padding:20px;box-shadow:0 10px 30px rgba(2,6,23,0.06);overflow:hidden;}
+    h2{margin-top:0;color:var(--accent-2);}
+    /* hero features */
+    .features{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px;justify-content:center;}
+    .feature{background:var(--glass);padding:12px 14px;border-radius:10px;font-weight:600;color:var(--text);display:flex;gap:8px;align-items:center;}
+    .kpi{display:flex;gap:16px;align-items:center;justify-content:center;margin-top:18px;}
+    .kpi .count{font-size:22px;font-weight:700;color:var(--accent);}
+    /* products */
+    .products-list{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+    .product{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.04);}
+    .product img{width:84px;height:64px;object-fit:cover;border-radius:8px;}
+    .product .meta{flex:1;}
+    .product .meta h4{margin:0 0 6px 0;font-size:16px;}
+    .price{font-weight:800;color:var(--accent);}
+    button.add{background:var(--accent);border:none;color:white;padding:8px 10px;border-radius:8px;font-weight:700;cursor:pointer;}
+    button.add:hover{filter:brightness(.95);}
+    /* gallery */
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .gallery img{width:100%;height:140px;object-fit:cover;border-radius:8px;transition:transform .3s ease;}
+    .gallery img:hover{transform:scale(1.03);}
+    /* map */
+    iframe.map{width:100%;border:0;height:300px;border-radius:10px;display:block;}
+    /* cart sidebar */
+    .sidebar{position:relative;}
+    .cart{position:sticky;top:18px;}
+    .cart h3{margin:0 0 8px 0;}
+    .cart .item{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(0,0,0,0.06);}
+    .cart .total{display:flex;justify-content:space-between;font-weight:800;margin-top:12px;font-size:18px;}
+    .cta{display:flex;gap:8px;margin-top:12px;}
+    .btn{flex:1;padding:10px;border-radius:10px;border:0;cursor:pointer;font-weight:700;}
+    .btn.primary{background:var(--accent);color:white;}
+    .btn.ghost{background:transparent;border:2px solid rgba(0,0,0,0.06);}
+    /* footer */
+    footer{padding:30px 20px;margin-top:30px;text-align:center;color:var(--muted);}
+    /* small screen fallback */
+    @media (max-width:980px){.grid{grid-template-columns:1fr;} .products-list{grid-template-columns:1fr} .gallery{grid-template-columns:repeat(2,1fr);}}
+    /* animations */
+    .fade-up{opacity:0;transform:translateY(12px);animation:fadeUp .7s forwards;animation-delay:0.08s;}
+    @keyframes fadeUp{to{opacity:1;transform:none}}
+    /* toggle theme */
+    .theme-toggle{position:fixed;right:18px;bottom:18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:white;padding:10px;border-radius:999px;box-shadow:0 10px 30px rgba(2,6,23,0.16);cursor:pointer;z-index:90;}
+    /* share button */
+    .share{background:linear-gradient(90deg,var(--accent-2),var(--accent));color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700;}
+    /* search */
+    .search{display:flex;gap:8px;margin-bottom:12px;}
+    .search input{flex:1;padding:10px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);}
+    /* badges */
+    .badge{background:var(--accent);color:white;padding:6px 8px;border-radius:999px;font-weight:700;font-size:13px;display:inline-block;}
+  </style>
+</head>
+<body data-theme="light">
+  <header>
+    <h1>La Esquina 24H</h1>
+    <p>Tu tienda 24 horas en Ronda Calatrava, Ciudad Real — Siempre abierta, siempre preparada.</p>
+    <div class="features fade-up" style="margin-top: 18px; animation-delay: 0ms;">
+      <div class="feature">⏰ Abierto 24h</div>
+      <div class="feature">☕ Comida caliente</div>
+      <div class="feature">📦 Punto de recogida</div>
+      <div class="feature">🔌 Zona de descanso</div>
+    </div>
+  </header>
+
+  <nav>
+    <a class="nav-link" href="#productos">Productos</a>
+    <a class="nav-link" href="#categorias">Categorías</a>
+    <a class="nav-link" href="#galeria">Galería</a>
+    <a class="nav-link" href="#ubicacion">Ubicación</a>
+    <a class="nav-link" href="#contacto">Contacto</a>
+    <button id="shareBtn" class="share" style="margin-left:12px">Compartir vista</button>
+  </nav>
+
+  <div class="container grid">
+    <main class="content">
+      <section class="card fade-up" id="productos" style="animation-delay: 80ms;">
+        <h2>Productos destacados</h2>
+        <p style="color:var(--muted);margin-top:6px">Selección de productos y comidas calientes, actualizada.</p>
+
+        <div style="margin-top:12px" class="search">
+          <input id="searchInput" placeholder="Buscar producto (ej: perrito, pizza, energía)...">
+          <button class="btn ghost" onclick="searchProducts()">Buscar</button>
+        </div>
+
+        <div class="products-list" id="productsList"><div class="product">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="Agua 0.5L">
+          <div class="meta">
+            <h4>Agua 0.5L</h4>
+            <div style="color:var(--muted);font-size:13px">Bebidas</div>
+            <div style="margin-top:8px"><span class="price">0.90€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(1)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1598511725930-2e5c3b4b2d4a" alt="Refresco 33cl">
+          <div class="meta">
+            <h4>Refresco 33cl</h4>
+            <div style="color:var(--muted);font-size:13px">Bebidas</div>
+            <div style="margin-top:8px"><span class="price">1.40€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(2)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" alt="Café americano">
+          <div class="meta">
+            <h4>Café americano</h4>
+            <div style="color:var(--muted);font-size:13px">Bebidas</div>
+            <div style="margin-top:8px"><span class="price">1.20€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(3)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1550547660-d9450f859349" alt="Perrito caliente básico">
+          <div class="meta">
+            <h4>Perrito caliente básico</h4>
+            <div style="color:var(--muted);font-size:13px">Comida</div>
+            <div style="margin-top:8px"><span class="price">2.50€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(4)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe" alt="Perrito caliente premium">
+          <div class="meta">
+            <h4>Perrito caliente premium</h4>
+            <div style="color:var(--muted);font-size:13px">Comida</div>
+            <div style="margin-top:8px"><span class="price">3.50€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(5)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1542281286-9e0a16bb7366" alt="Pizza individual">
+          <div class="meta">
+            <h4>Pizza individual</h4>
+            <div style="color:var(--muted);font-size:13px">Comida</div>
+            <div style="margin-top:8px"><span class="price">4.50€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(6)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1604908177522-2d9b0b1bcd3b" alt="Bocadillo mixto">
+          <div class="meta">
+            <h4>Bocadillo mixto</h4>
+            <div style="color:var(--muted);font-size:13px">Comida</div>
+            <div style="margin-top:8px"><span class="price">3.90€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(7)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947" alt="Fideos ramen">
+          <div class="meta">
+            <h4>Fideos ramen</h4>
+            <div style="color:var(--muted);font-size:13px">Comida</div>
+            <div style="margin-top:8px"><span class="price">2.20€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(8)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642" alt="Snacks gourmet">
+          <div class="meta">
+            <h4>Snacks gourmet</h4>
+            <div style="color:var(--muted);font-size:13px">Snacks</div>
+            <div style="margin-top:8px"><span class="price">2.80€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(9)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1585386959984-a415522c1b2b" alt="Pilas AA (pack 2)">
+          <div class="meta">
+            <h4>Pilas AA (pack 2)</h4>
+            <div style="color:var(--muted);font-size:13px">Hogar</div>
+            <div style="margin-top:8px"><span class="price">2.20€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(10)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9" alt="Cargador rápido USB-C">
+          <div class="meta">
+            <h4>Cargador rápido USB-C</h4>
+            <div style="color:var(--muted);font-size:13px">Electronica</div>
+            <div style="margin-top:8px"><span class="price">9.90€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(11)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1600750969475-6b0d3b1c7a6b" alt="Tarjeta Amazon 20€">
+          <div class="meta">
+            <h4>Tarjeta Amazon 20€</h4>
+            <div style="color:var(--muted);font-size:13px">Tarjetas</div>
+            <div style="margin-top:8px"><span class="price">20.00€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(12)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1544025162-d76694265947" alt="Opción vegana: wrap">
+          <div class="meta">
+            <h4>Opción vegana: wrap</h4>
+            <div style="color:var(--muted);font-size:13px">Saludable</div>
+            <div style="margin-top:8px"><span class="price">3.80€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(13)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1567306226416-28f0efdc88ce" alt="Chocolate premium">
+          <div class="meta">
+            <h4>Chocolate premium</h4>
+            <div style="color:var(--muted);font-size:13px">Dulces</div>
+            <div style="margin-top:8px"><span class="price">2.50€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(14)">Añadir</button>
+          </div>
+        </div><div class="product">
+          <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb" alt="Bollería">
+          <div class="meta">
+            <h4>Bollería</h4>
+            <div style="color:var(--muted);font-size:13px">Dulces</div>
+            <div style="margin-top:8px"><span class="price">1.20€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(15)">Añadir</button>
+          </div>
+        </div></div>
+
+        <h3 style="margin-top:18px">Tabla de precios (completa)</h3>
+        <div style="overflow:auto;margin-top:10px">
+          <table style="width:100%;border-collapse:collapse">
+            <thead><tr><th>Producto</th><th>Categoría</th><th>Precio</th><th>Stock</th></tr></thead>
+            <tbody id="priceTable"><tr><td>Agua 0.5L</td><td>Bebidas</td><td>0.90€</td><td>12</td></tr><tr><td>Refresco 33cl</td><td>Bebidas</td><td>1.40€</td><td>20</td></tr><tr><td>Café americano</td><td>Bebidas</td><td>1.20€</td><td>30</td></tr><tr><td>Perrito caliente básico</td><td>Comida</td><td>2.50€</td><td>18</td></tr><tr><td>Perrito caliente premium</td><td>Comida</td><td>3.50€</td><td>6</td></tr><tr><td>Pizza individual</td><td>Comida</td><td>4.50€</td><td>10</td></tr><tr><td>Bocadillo mixto</td><td>Comida</td><td>3.90€</td><td>14</td></tr><tr><td>Fideos ramen</td><td>Comida</td><td>2.20€</td><td>9</td></tr><tr><td>Snacks gourmet</td><td>Snacks</td><td>2.80€</td><td>22</td></tr><tr><td>Pilas AA (pack 2)</td><td>Hogar</td><td>2.20€</td><td>40</td></tr><tr><td>Cargador rápido USB-C</td><td>Electronica</td><td>9.90€</td><td>8</td></tr><tr><td>Tarjeta Amazon 20€</td><td>Tarjetas</td><td>20.00€</td><td>100</td></tr><tr><td>Opción vegana: wrap</td><td>Saludable</td><td>3.80€</td><td>7</td></tr><tr><td>Chocolate premium</td><td>Dulces</td><td>2.50€</td><td>25</td></tr><tr><td>Bollería</td><td>Dulces</td><td>1.20€</td><td>16</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="card fade-up" id="categorias" style="margin-top: 18px; animation-delay: 160ms;">
+        <h2>Categorías</h2>
+        <p style="color:var(--muted)">Todo lo necesario: bebidas, comida, farmacia básica, hogar, electrónica y opciones especiales.</p>
+        <ul style="margin-top:12px;color:var(--text)">
+          <li><strong>Bebidas:</strong> Agua, refrescos, cafés, energéticas.</li>
+          <li><strong>Comida caliente:</strong> Perritos, pizzas, hamburguesas, ramen.</li>
+          <li><strong>Opciones saludables:</strong> Ensaladas, wraps, opciones veganas y sin gluten.</li>
+          <li><strong>Hogar y limpieza:</strong> Detergentes, esponjas, papel.</li>
+          <li><strong>Farmacia básica:</strong> Tiritas, analgésicos, antisépticos.</li>
+          <li><strong>Electrónica:</strong> Cables, cargadores, auriculares, powerbanks.</li>
+          <li><strong>Internacional:</strong> Productos americanos y asiáticos importados.</li>
+        </ul>
+      </section>
+
+      <section class="card fade-up" id="galeria" style="margin-top: 18px; animation-delay: 240ms;">
+        <h2>Galería</h2>
+        <div class="gallery" id="gallery">
+          <img src="https://images.unsplash.com/photo-1584267385494-9fdd9b7f6a6b" alt="estanterias">
+          <img src="https://images.unsplash.com/photo-1599011442374-6f5b97ed986a" alt="zona descanso">
+          <img src="https://images.unsplash.com/photo-1576618148400-61d095e8a67d" alt="caja">
+          <img src="https://images.unsplash.com/photo-1565294124520-50fb0000f7fb" alt="bebidas">
+          <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836" alt="comida caliente">
+          <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4" alt="clientes">
+        </div>
+      </section>
+
+      <section class="card fade-up" id="ubicacion" style="margin-top: 18px; animation-delay: 320ms;">
+        <h2>Ubicación</h2>
+        <p style="color:var(--muted)">Ronda Calatrava, 26 — Ciudad Real. Zona con alto flujo de tráfico y urbanización cercana.</p>
+        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3150.6738958719307!2d-3.93!3d38.986!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDU5JzA0LjAiTiAzwrAzNScwNC4wIlc!5e0!3m2!1ses!2ses!4v0000000000" loading="lazy"></iframe>
+      </section>
+
+      <section class="card fade-up" id="contacto" style="margin-top: 18px; animation-delay: 400ms;">
+        <h2>Contacto y detalles</h2>
+        <p style="color:var(--muted)">Teléfono, correo y horarios. Además un pequeño formulario de contacto (local, sin enviar a servidor).</p>
+        <p><strong>Teléfono:</strong> 600 000 000 — <strong>Email:</strong> contacto@laesquina24h.com</p>
+
+        <form onsubmit="return false" style="margin-top:12px;display:grid;gap:8px;">
+          <input placeholder="Tu nombre" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)">
+          <input placeholder="Tu email" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)">
+          <textarea placeholder="Mensaje" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)" rows="4"></textarea>
+          <div style="display:flex;gap:8px;">
+            <button class="btn primary" onclick="alert('Formulario en modo demo — copiar y pegar mensaje manualmente')">Enviar</button>
+            <button class="btn ghost" onclick="copyContact()">Copiar contacto</button>
+          </div>
+        </form>
+      </section>
+
+    </main>
+
+    <aside class="sidebar">
+      <div class="card cart" id="cartBox">
+        <h3>Tu carrito <span style="font-size:13px;color:var(--muted);">(demo)</span></h3>
+        <div id="cartItems"><p style="color:var(--muted)">Añade productos para que aparezcan aquí.</p></div>
+        <div class="total" id="cartTotal" style="display: none;"><span>Total</span><span id="totalValue">3.90€</span></div>
+        <div class="cta" style="margin-top:12px">
+          <button class="btn primary" onclick="checkout()">Finalizar compra</button>
+          <button class="btn ghost" onclick="clearCart()">Vaciar</button>
+        </div>
+        <div style="margin-top:12px;font-size:13px;color:var(--muted)">
+          <p><strong>Pagos:</strong> Tarjeta, Bizum, móvil. (Demo)</p>
+          <p><strong>Seguridad:</strong> CCTV 24/7, sistema anti-hurto</p>
+        </div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h3>Horarios y datos</h3>
+        <p style="color:var(--muted)"><strong>Apertura:</strong> 24h — <strong>Aforo:</strong> 25 personas</p>
+        <p style="color:var(--muted)"><strong>Empleo:</strong> 3 turnos — <strong>Plazas:</strong> 8 trabajadores</p>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h3>Compartir</h3>
+        <p style="color:var(--muted)">Puedes descargar este archivo y compartirlo por correo o mensajería. También puedes usar la opción <em>Compartir vista</em>.</p>
+        <button class="btn primary" onclick="downloadHTML()">Descargar página (.html)</button>
+      </div>
+    </aside>
+  </div>
+
+  <footer>
+    © 2025 La Esquina 24H — Ciudad Real — Documento demo. Para publicación online se requieren hosting y dominio.
+  </footer>
+
+  <button id="themeToggle" class="theme-toggle" title="Cambiar tema">🌙</button>
+
+  <script>
+    // Data inicial de productos
+    const PRODUCTS = [
+      {id:1,title:'Agua 0.5L',price:0.90,cat:'Bebidas',img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836',stock:12},
+      {id:2,title:'Refresco 33cl',price:1.40,cat:'Bebidas',img:'https://images.unsplash.com/photo-1598511725930-2e5c3b4b2d4a',stock:20},
+      {id:3,title:'Café americano',price:1.20,cat:'Bebidas',img:'https://images.unsplash.com/photo-1509042239860-f550ce710b93',stock:30},
+      {id:4,title:'Perrito caliente básico',price:2.50,cat:'Comida',img:'https://images.unsplash.com/photo-1550547660-d9450f859349',stock:18},
+      {id:5,title:'Perrito caliente premium',price:3.50,cat:'Comida',img:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe',stock:6},
+      {id:6,title:'Pizza individual',price:4.50,cat:'Comida',img:'https://images.unsplash.com/photo-1542281286-9e0a16bb7366',stock:10},
+      {id:7,title:'Bocadillo mixto',price:3.90,cat:'Comida',img:'https://images.unsplash.com/photo-1604908177522-2d9b0b1bcd3b',stock:14},
+      {id:8,title:'Fideos ramen',price:2.20,cat:'Comida',img:'https://images.unsplash.com/photo-1544025162-d76694265947',stock:9},
+      {id:9,title:'Snacks gourmet',price:2.80,cat:'Snacks',img:'https://images.unsplash.com/photo-1523986371872-9d3ba2e2f642',stock:22},
+      {id:10,title:'Pilas AA (pack 2)',price:2.20,cat:'Hogar',img:'https://images.unsplash.com/photo-1585386959984-a415522c1b2b',stock:40},
+      {id:11,title:'Cargador rápido USB-C',price:9.90,cat:'Electronica',img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9',stock:8},
+      {id:12,title:'Tarjeta Amazon 20€',price:20.00,cat:'Tarjetas',img:'https://images.unsplash.com/photo-1600750969475-6b0d3b1c7a6b',stock:100},
+      {id:13,title:'Opción vegana: wrap',price:3.80,cat:'Saludable',img:'https://images.unsplash.com/photo-1544025162-d76694265947',stock:7},
+      {id:14,title:'Chocolate premium',price:2.50,cat:'Dulces',img:'https://images.unsplash.com/photo-1567306226416-28f0efdc88ce',stock:25},
+      {id:15,title:'Bollería',price:1.20,cat:'Dulces',img:'https://images.unsplash.com/photo-1563805042-7684c019e1cb',stock:16}
+    ];
+
+    // Render products
+    const productsList = document.getElementById('productsList');
+    const priceTable = document.getElementById('priceTable');
+    function renderProducts(list = PRODUCTS){
+      productsList.innerHTML='';
+      priceTable.innerHTML='';
+      list.forEach(p=>{
+        // card
+        const div = document.createElement('div');
+        div.className='product';
+        div.innerHTML = `
+          <img src="${p.img}" alt="${escapeHTML(p.title)}" />
+          <div class="meta">
+            <h4>${escapeHTML(p.title)}</h4>
+            <div style="color:var(--muted);font-size:13px">${escapeHTML(p.cat)}</div>
+            <div style="margin-top:8px"><span class="price">${p.price.toFixed(2)}€</span></div>
+          </div>
+          <div style="text-align:right">
+            <button class="add" onclick="addToCart(${p.id})">Añadir</button>
+          </div>
+        `;
+        productsList.appendChild(div);
+
+        // table row
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td>${escapeHTML(p.title)}</td><td>${escapeHTML(p.cat)}</td><td>${p.price.toFixed(2)}€</td><td>${p.stock}</td>`;
+        priceTable.appendChild(tr);
+      });
+    }
+    renderProducts();
+
+    // Simple cart functionality (client-side demo)
+    let CART = [];
+    function addToCart(id){
+      const prod = PRODUCTS.find(x=>x.id===id);
+      if(!prod || prod.stock<=0){ alert('Producto agotado'); return; }
+      const existing = CART.find(x=>x.id===id);
+      if(existing) existing.qty++;
+      else CART.push({id:prod.id,title:prod.title,price:prod.price,qty:1});
+      renderCart();
+      animateAdd();
+    }
+    function renderCart(){
+      const box = document.getElementById('cartItems');
+      const totalEl = document.getElementById('totalValue');
+      box.innerHTML='';
+      if(CART.length===0){ box.innerHTML='<p style="color:var(--muted)">Añade productos para que aparezcan aquí.</p>'; document.getElementById('cartTotal').style.display='none'; return; }
+      let total=0;
+      CART.forEach(item=>{
+        total += item.price*item.qty;
+        const div = document.createElement('div');
+        div.className='item';
+        div.innerHTML=`<div style="flex:1"><strong>${escapeHTML(item.title)}</strong><div style="color:var(--muted);font-size:13px">${item.qty} × ${item.price.toFixed(2)}€</div></div><div style="text-align:right"><button class="btn ghost" onclick="removeOne(${item.id})">-</button> <button class="btn ghost" onclick="addToCart(${item.id})">+</button></div>`;
+        box.appendChild(div);
+      });
+      totalEl.textContent = total.toFixed(2) + '€';
+      document.getElementById('cartTotal').style.display='flex';
+    }
+    function removeOne(id){ const it = CART.find(x=>x.id===id); if(it){ it.qty--; if(it.qty<=0) CART=CART.filter(x=>x.id!==id); renderCart(); } }
+    function clearCart(){ CART=[]; renderCart(); }
+
+    function checkout(){ if(CART.length===0){ alert('Tu carrito está vacío.'); return; } alert('Demo de pago — No hay integración. Total: ' + document.getElementById('totalValue').textContent); }
+
+    // Search
+    function searchProducts(){
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      if(!q){ renderProducts(); return; }
+      const filtered = PRODUCTS.filter(p=> (p.title + ' ' + p.cat).toLowerCase().includes(q));
+      renderProducts(filtered);
+    }
+
+    // small helpers
+    function escapeHTML(s){ return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+    // theme toggle and persistence
+    const themeBtn = document.getElementById('themeToggle');
+    const root = document.body;
+    const current = localStorage.getItem('le_theme') || 'light';
+    root.setAttribute('data-theme', current);
+    themeBtn.textContent = current === 'light' ? '🌙' : '☀️';
+    themeBtn.addEventListener('click', ()=>{
+      const t = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', t);
+      localStorage.setItem('le_theme', t);
+      themeBtn.textContent = t === 'light' ? '🌙' : '☀️';
+    });
+
+    // copy contact to clipboard
+    function copyContact(){ navigator.clipboard?.writeText('Tel: 600 000 000\\nEmail: contacto@laesquina24h.com').then(()=>alert('Contacto copiado al portapapeles')) }
+
+    // download full HTML file (this page)
+    function downloadHTML(){
+      const blob = new Blob([document.documentElement.outerHTML], {type:'text/html'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'La_Esquina_24H_completa.html';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    // share / preview: copy sandbox path to clipboard (user can share file later)
+    document.getElementById('shareBtn').addEventListener('click', ()=>{
+      const sampleLink = 'sandbox:/mnt/data/La_Esquina_24H_full.html';
+      navigator.clipboard?.writeText(sampleLink).then(()=>alert('Enlace de vista copiado al portapapeles. Puedes pegarlo y enviarlo a quien quieras (funciona en este entorno).'), ()=>alert('Copia manual: ' + sampleLink));
+    });
+
+    // animation on add
+    function animateAdd(){
+      const el = document.createElement('div');
+      el.textContent = '+1';
+      el.style.position='fixed'; el.style.right='26px'; el.style.bottom='120px'; el.style.background='var(--accent)'; el.style.color='white'; el.style.padding='8px 10px'; el.style.borderRadius='999px'; el.style.zIndex=9999; el.style.opacity='0'; el.style.transform='translateY(8px)';
+      document.body.appendChild(el);
+      requestAnimationFrame(()=>{ el.style.transition='all 600ms cubic-bezier(.2,.9,.3,1)'; el.style.opacity='1'; el.style.transform='translateY(-40px)'; });
+      setTimeout(()=>{ el.style.opacity='0'; el.style.transform='translateY(-80px)'; },700);
+      setTimeout(()=>el.remove(),1400);
+    }
+
+    // prevent form submission default
+    window.addEventListener('load', ()=>{
+      // initial render in case JS loads late
+      renderProducts();
+      // reveal fade-up items
+      document.querySelectorAll('.fade-up').forEach((el,i)=>{ el.style.animationDelay = (i*80)+'ms'; el.classList.add('fade-up'); });
+    });
+  </script>
+
+
+</body></html>
